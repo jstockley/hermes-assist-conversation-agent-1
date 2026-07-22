@@ -13,7 +13,7 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers import intent
 from homeassistant.util import ulid as ulid_util
 
-from .const import CONF_API_KEY, CONF_URL, DEFAULT_NAME, DOMAIN, REQUEST_TIMEOUT
+from .const import CONF_API_KEY, CONF_URL, DEFAULT_API_KEY, DEFAULT_NAME, DOMAIN, REQUEST_TIMEOUT
 
 
 async def async_setup_entry(
@@ -65,7 +65,7 @@ class HermesAssistConversationEntity(
         conversation_id = user_input.conversation_id or ulid_util.ulid_now()
 
         url = self.config_entry.data[CONF_URL].rstrip("/")
-        api_key = self.config_entry.data[CONF_API_KEY]
+        api_key = self.config_entry.data.get(CONF_API_KEY) or DEFAULT_API_KEY
         payload = {
             "text": user_input.text,
             "conversation_id": conversation_id,
